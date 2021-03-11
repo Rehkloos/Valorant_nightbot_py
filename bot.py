@@ -1,10 +1,10 @@
-import connexion
 import requests
 import resources as res
+from flask import Flask, render_template
 
 
 # Create the application instance
-app = connexion.App(__name__, specification_dir='./')
+app = Flask(__name__, template_folder='frontpage')
 
 
 def getValorantGameUpdates():
@@ -64,7 +64,7 @@ def rank_check(Region: str = "", Name: str = "", Tag: str = ""):
 
 @app.route('/')
 def test():
-    return "hello world"
+    return render_template('index.html')
 # Create a URL route in our application for '/'
 
 
