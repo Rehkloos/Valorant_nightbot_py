@@ -1,0 +1,8 @@
+{
+    "apps": [{
+        "name": "valorant_rank",
+        "script": "bot.py",
+        "interpreter": "python3.6",
+        "interpreter_args": "-u"
+    }]
+}
