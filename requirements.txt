@@ -1,2 +1,3 @@
 requests >= 2.18.4
 connexion == 2.7.0
+gunicorn == 20.0.4
