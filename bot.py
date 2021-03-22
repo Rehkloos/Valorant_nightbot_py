@@ -8,14 +8,28 @@ app = Flask(__name__, template_folder='frontpage')
 
 
 def getValorantGameUpdates():
+    headers = {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Max-Age': '3600',
+        'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'
+    }
     URL = "https://api.henrikdev.xyz/valorant/v1/website/en-us?filter=game_updates"
-    response = requests.get(URL)
+    response = requests.get(URL, headers=headers)
     return response.json()
 
 
 def getValorantRank(Region, Name, Tag):
+    headers = {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Max-Age': '3600',
+        'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'
+    }
     URL = "https://api.henrikdev.xyz/valorant/v2/mmr/" + Region + "/" + Name + "/" + Tag
-    response = requests.get(URL)
+    response = requests.get(URL, headers=headers)
     return response.json()
 
 # Read the swagger.yml file to configure the endpoints
@@ -30,20 +44,6 @@ responseJSON = getValorantGameUpdates()
 banner = responseJSON['data'][0]['banner_url']
 title = responseJSON['data'][0]['title']
 url = responseJSON['data'][0]['url']
-
-# def rank_check():
-# # Valortant stat calls
-#     responseJSON2 = getValorantRank()
-#     rank_number = responseJSON2['data']['by_season']['e2a2']['final_rank'];
-#     elo = responseJSON2['data']['current_data']['elo'];
-#     status = responseJSON['status']
-#     rank_tier = res.ranks[str(rank_number)]
-
-#     if status == '200':
-#             return str(rank_tier)
-#     elif status == '451':
-#             message = responseJSON2['message']
-#             return message
 
 
 def rank_check(Region: str = "", Name: str = "", Tag: str = ""):
@@ -71,10 +71,6 @@ def test():
 @app.route('/news')
 def home():
     return "Latest VALORANT Patchnotes: " + url
-
-# @app.route('/rank')
-# def rank():
-#     return rank_check()
 
 
 @app.route('/rank/<Region>/<Name>/<Tag>')
