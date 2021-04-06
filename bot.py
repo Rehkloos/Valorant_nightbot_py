@@ -53,26 +53,12 @@ def news():
     url = responseJSON['data'][0]['url']
     return "Latest VALORANT Patchnotes: " + url
 
-
-def rank_check(Region: str = "", Name: str = "", Tag: str = ""):
-    # Valortant stat calls
-    apiResponse = getValorantRank(Region, Name, Tag)
-    # VALORANT EPISODE 2 ACT 2
-    rank_number = apiResponse['data']['by_season']['e2a2']['final_rank']
-    # elo = apiResponse =['data']['current_data']['elo'];
-    status = apiResponse['status']
-    rank_tier = res.ranks[str(rank_number)]
-
-    if status == '200':
-        return str(rank_tier)
-    elif status == '451':
-        message = apiResponse = ['message']
-        return message
-
 def GetStats(name: str = "", tag: str = "", type: str = "") -> Player:
     URL = 'https://tracker.gg/valorant/profile/riot/' + \
         name + '%23' + tag + '/overview?playlist=' + type
     page = requests.get(URL)
+
+    status = page.status_code
 
     #with open("page.html", "wb") as f:
     #    f.write(page.content)
@@ -115,8 +101,8 @@ def GetStats(name: str = "", tag: str = "", type: str = "") -> Player:
     player.game.firstBlood = int(stats[7])
     player.game.ace = int(stats[8])
     player.game.clutch = int(stats[9])
-    player.game.flawless = int(stats[10])
-    player.game.mostKills = int(stats[11])
+    # player.game.flawless = int(stats[10])
+    # player.game.mostKills = int(stats[11])
 
     # Get table of top 3 agents
     agent_stats = results.find('div', class_='top-agents__table-container')
@@ -185,8 +171,8 @@ def GetStats(name: str = "", tag: str = "", type: str = "") -> Player:
             "firstBlood": player.game.firstBlood,
             "ace": player.game.ace,
             "clutch": player.game.clutch,
-            "flawless": player.game.flawless,
-            "mostKills": player.game.mostKills,
+            # "flawless": player.game.flawless,
+            # "mostKills": player.game.mostKills,
             "accuracy_HeadRate": player.accuracy.headRate,
             "accuracy_Head":player.accuracy.head,
             "accuracy_bodyRate":player.accuracy.bodyRate ,
@@ -196,6 +182,7 @@ def GetStats(name: str = "", tag: str = "", type: str = "") -> Player:
         }
 
         segments = {
+            "status": status,
             "segments": api
         }
 
@@ -219,8 +206,8 @@ def GetStats(name: str = "", tag: str = "", type: str = "") -> Player:
             "firstBlood": player.game.firstBlood,
             "ace": player.game.ace,
             "clutch": player.game.clutch,
-            "flawless": player.game.flawless,
-            "mostKills": player.game.mostKills,
+            # "flawless": player.game.flawless,
+            # "mostKills": player.game.mostKills,
             "accuracy_HeadRate": player.accuracy.headRate,
             "accuracy_Head":player.accuracy.head,
             "accuracy_bodyRate":player.accuracy.bodyRate ,
@@ -230,6 +217,7 @@ def GetStats(name: str = "", tag: str = "", type: str = "") -> Player:
         }
 
         segments = {
+            "status": status,
             "segments": api
         }
 
@@ -253,12 +241,13 @@ def GetStats(name: str = "", tag: str = "", type: str = "") -> Player:
             "killsPerRound": player.damage.killsPerRound,
             "firstBlood": player.game.firstBlood,
             "ace": player.game.ace,
-            "clutch": player.game.clutch,
-            "flawless": player.game.flawless,
-            "mostKills": player.game.mostKills
+            "clutch": player.game.clutch
+            # "flawless": player.game.flawless,
+            # "mostKills": player.game.mostKills
         }
 
         segments = {
+            "status": status,
             "segements": api
         }
 
@@ -268,6 +257,22 @@ def GetStats(name: str = "", tag: str = "", type: str = "") -> Player:
 
 
     return data
+
+
+def rank_check(Region: str = "", Name: str = "", Tag: str = ""):
+    # Valortant stat calls
+    apiResponse = getValorantRank(Region, Name, Tag)
+    # VALORANT EPISODE 2 ACT 2
+    rank_number = apiResponse['data']['by_season']['e2a2']['final_rank']
+    # elo = apiResponse =['data']['current_data']['elo'];
+    status = apiResponse['status']
+    rank_tier = res.ranks[str(rank_number)]
+
+    if status == '200':
+        return str(rank_tier)
+    elif status == '451':
+        message = apiResponse = ['message']
+        return message
 
 
 @app.route('/')
